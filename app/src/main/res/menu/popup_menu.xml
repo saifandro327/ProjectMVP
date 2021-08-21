@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/action_popup_report"
+        android:title="Hate Speech" />
+    <item
+        android:id="@+id/action_popup_fake"
+        android:title="Spam" />
+    <item
+        android:id="@+id/action_popup_meme"
+        android:title="Not a Meme" />
+    <item
+        android:id="@+id/action_popup_edit"
+        android:title="Hate Speech" />
+    <item
+        android:id="@+id/action_popup_delete"
+        android:title="Racist" />
+
+
+    <item
+        android:id="@+id/action_popup_harrassment"
+        android:title="Bullying or harassment" />
+    <item
+        android:id="@+id/action_popup_nu"
+        android:title="Nudity or sexual activity" />
+</menu>
