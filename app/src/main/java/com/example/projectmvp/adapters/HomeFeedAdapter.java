@@ -2,6 +2,7 @@ package com.example.projectmvp.adapters;
 
 import android.content.Context;
 import android.os.Looper;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.projectmvp.R;
+import com.example.projectmvp.helpers.MetalRecyclerViewPager;
 import com.example.projectmvp.model.HomeFeedObjects;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,14 +28,14 @@ import java.util.ArrayList;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-public class HomeFeedAdapter extends RecyclerView.Adapter<HomeFeedAdapter.ViewHolder> {
+public class HomeFeedAdapter extends MetalRecyclerViewPager.MetalAdapter<HomeFeedAdapter.ViewHolder> {
     private static final String TAG = "Adapter";
     private Context context;
     private ArrayList<HomeFeedObjects> homeFeedObjects;
-    boolean isDoubleTap = false;
-       
 
-    public HomeFeedAdapter(ArrayList<HomeFeedObjects> homeFeedObjects, Context context) {
+
+    public HomeFeedAdapter(@NonNull DisplayMetrics metrics, ArrayList<HomeFeedObjects> homeFeedObjects, Context context) {
+        super(metrics);
         this.homeFeedObjects = homeFeedObjects;
         this.context = context;
     }
@@ -49,6 +51,8 @@ public class HomeFeedAdapter extends RecyclerView.Adapter<HomeFeedAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull HomeFeedAdapter.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+
         holder.textViewProfileName.setText(homeFeedObjects.get(position).getName());
         holder.textViewCaption.setText(homeFeedObjects.get(position).getCaption());
         Glide.with(context)
@@ -95,7 +99,7 @@ public class HomeFeedAdapter extends RecyclerView.Adapter<HomeFeedAdapter.ViewHo
 //    }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends MetalRecyclerViewPager.MetalViewHolder {
 
 
         TextView textViewCaption, textViewProfileName;

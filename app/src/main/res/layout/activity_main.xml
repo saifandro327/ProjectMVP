@@ -18,51 +18,63 @@
             android:layout_width="wrap_content"
             android:text="All"
             app:chipBackgroundColor="@color/chip_selected_bg"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:chipStrokeColor="#4287f5"
+            app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="Trending"
             app:chipBackgroundColor="@color/chip_selected_bg"
 
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:chipStrokeColor="#4287f5"
+            app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="Local"
             app:chipBackgroundColor="@color/chip_selected_bg"
 
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:chipStrokeColor="#4287f5"
+            app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="Elon Musk"
             app:chipBackgroundColor="@color/chip_selected_bg"
 
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:chipStrokeColor="#4287f5"
+            app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="Movies"
             app:chipBackgroundColor="@color/chip_selected_bg"
-
+            app:chipStrokeColor="#4287f5"
+            app:chipStrokeWidth="1dp"
             android:layout_height="wrap_content" />
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="Video Games"
             app:chipBackgroundColor="@color/chip_selected_bg"
-
+            app:chipStrokeColor="#4287f5"
+            app:chipStrokeWidth="1dp"
             android:layout_height="wrap_content" />
 
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="Cricket"
+            app:chipStrokeColor="#4287f5"
+            app:chipStrokeWidth="1dp"
             app:chipBackgroundColor="@color/chip_selected_bg"
             android:layout_height="wrap_content" />
     </com.google.android.material.chip.ChipGroup>
 </HorizontalScrollView>
-    <androidx.recyclerview.widget.RecyclerView
+    <com.example.projectmvp.helpers.MetalRecyclerViewPager
         android:id="@+id/home_feed_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
