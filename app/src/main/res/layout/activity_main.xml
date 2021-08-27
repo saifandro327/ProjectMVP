@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 <HorizontalScrollView
     android:layout_width="match_parent"
+    android:scrollbars="none"
     android:layout_height="wrap_content">
     <com.google.android.material.chip.ChipGroup
         android:layout_width="match_parent"
@@ -17,6 +18,8 @@
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="All"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+
             app:chipBackgroundColor="@color/chip_selected_bg"
             android:layout_height="wrap_content"
             app:chipStrokeColor="#4287f5"
@@ -26,6 +29,7 @@
             android:layout_width="wrap_content"
             android:text="Trending"
             app:chipBackgroundColor="@color/chip_selected_bg"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
 
             android:layout_height="wrap_content"
             app:chipStrokeColor="#4287f5"
@@ -35,6 +39,7 @@
             android:layout_width="wrap_content"
             android:text="Local"
             app:chipBackgroundColor="@color/chip_selected_bg"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
 
             android:layout_height="wrap_content"
             app:chipStrokeColor="#4287f5"
@@ -44,6 +49,7 @@
             android:layout_width="wrap_content"
             android:text="Elon Musk"
             app:chipBackgroundColor="@color/chip_selected_bg"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
 
             android:layout_height="wrap_content"
             app:chipStrokeColor="#4287f5"
@@ -52,6 +58,8 @@
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="Movies"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+
             app:chipBackgroundColor="@color/chip_selected_bg"
             app:chipStrokeColor="#4287f5"
             app:chipStrokeWidth="1dp"
@@ -60,6 +68,8 @@
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="Video Games"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+
             app:chipBackgroundColor="@color/chip_selected_bg"
             app:chipStrokeColor="#4287f5"
             app:chipStrokeWidth="1dp"
@@ -68,6 +78,8 @@
         <com.google.android.material.chip.Chip
             android:layout_width="wrap_content"
             android:text="Cricket"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+
             app:chipStrokeColor="#4287f5"
             app:chipStrokeWidth="1dp"
             app:chipBackgroundColor="@color/chip_selected_bg"

@@ -44,4 +44,9 @@ public class HomeFeedObjects {
     public void setCaption(String caption) {
         Caption = caption;
     }
+
+
+
+
+
 }
