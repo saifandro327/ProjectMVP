@@ -16,16 +16,19 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.projectmvp.adapters.HomeFeedAdapter;
 import com.example.projectmvp.apis.ApiClient;
 import com.example.projectmvp.apis.Apis;
 import com.example.projectmvp.helpers.StartSnapHelper;
-import com.example.projectmvp.model.HomeFeedObjects;
 import com.example.projectmvp.responses.FeedResponse;
+import com.example.projectmvp.responses.Record;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -35,22 +38,21 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerViewHomeFeed;
-    List<FeedResponse> feedResponseArrayList;
+    ArrayList<FeedResponse> feedResponseArrayList;
     HomeFeedAdapter homeFeedAdapter;
-
     Apis apis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerViewHomeFeed = (RecyclerView) findViewById(R.id.home_feed_recyclerview);
-        DisplayMetrics metrics = getDisplayMetrics();
 
 //        homeFeedObjectsArrayList = new ArrayList<>();
 //        homeFeedObjectsArrayList.add(new HomeFeedObjects(R.mipmap.cat1, "Reddit", R.mipmap.pic2, "this is Caption"));
 //        homeFeedObjectsArrayList.add(new HomeFeedObjects(R.mipmap.cat1, "9GAG", R.mipmap.pic1, "this is 2nd Caption"));
 //        homeFeedObjectsArrayList.add(new HomeFeedObjects(R.mipmap.cat1, "Pewdiepie", R.mipmap.pic2, "this is 3rd Caption"));
 getSupportActionBar().hide();
+getFeeddata();
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
 //        recyclerViewHomeFeed.setLayoutManager(linearLayoutManager);
 //        recyclerViewHomeFeed.setAdapter(homeFeedAdapter);
@@ -138,19 +140,43 @@ getSupportActionBar().hide();
 //            return currentPosition;
 //        }
 //    }
-public void getFeeddata(){
-    final Call<List<FeedResponse>> feedResponse = ApiClient.getUserService().getfeedData();
 
-feedResponse.enqueue(new Callback<List<FeedResponse>>() {
+public void getFeeddata(){
+    DisplayMetrics metrics = getDisplayMetrics();
+
+    final Call<FeedResponse> feedResponse = ApiClient.getUserService().getfeedData();
+
+feedResponse.enqueue(new Callback<FeedResponse>() {
     @Override
-    public void onResponse(Call<List<FeedResponse>> call, Response<List<FeedResponse>> response) {
-        feedResponseArrayList=response.body();
+    public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
+        FeedResponse feedResponse1 = response.body();
+        if (feedResponse1 != null) {
+            feedResponseArrayList = new ArrayList(Arrays.asList(feedResponse1.getRecords()));
+            homeFeedAdapter = new HomeFeedAdapter(metrics, feedResponseArrayList, MainActivity.this);
+            recyclerViewHomeFeed.setAdapter(homeFeedAdapter);
+        }
+
+//if (feedResponse1!=null) {
+//    List<Record> resultList = response.body().getRecords();
+//
+//
+//}
+//        List<Record> feedResponse1=response.body().getRecords();
+//        if (feedResponse1 != null) {
+
+
+//            homeFeedAdapter=new HomeFeedAdapter(metrics, (ArrayList<FeedResponse>) feedResponseArrayList,getApplicationContext());
+//            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false);
+//            recyclerViewHomeFeed.setLayoutManager(linearLayoutManager);
+//            recyclerViewHomeFeed.setAdapter(homeFeedAdapter);
+//        }
+//        feedResponseArrayList= (response.body());
 
     }
 
     @Override
-    public void onFailure(Call<List<FeedResponse>> call, Throwable t) {
-
+    public void onFailure(Call<FeedResponse> call, Throwable t) {
+        Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
     }
 });
 }

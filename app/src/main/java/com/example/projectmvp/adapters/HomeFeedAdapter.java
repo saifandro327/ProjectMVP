@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.projectmvp.R;
 import com.example.projectmvp.helpers.MetalRecyclerViewPager;
-import com.example.projectmvp.model.HomeFeedObjects;
 import com.example.projectmvp.responses.FeedResponse;
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +39,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
