@@ -1,6 +1,7 @@
 package com.example.projectmvp.apis;
 
 import com.example.projectmvp.responses.FeedResponse;
+import com.example.projectmvp.responses.GoogsheetResponse;
 
 import java.util.List;
 
@@ -14,4 +15,7 @@ public interface Apis {
     Call<FeedResponse> getfeedData();
 
 
+
+//    @GET("projectmvp/google_sheets/gbLTsoDbpQRyFZvU?tabId=Sheet1")
+//    Call<GoogsheetResponse> getfeedData();
 }

@@ -11,13 +11,16 @@ public class Fields {
 
     @SerializedName("Profile Picture")
     @Expose
-    private List<ProfilePicture> profilePicture = null;
+    private List<ProfilePicture> profilePicture;
     @SerializedName("Name")
     @Expose
     private String name;
     @SerializedName("Images")
     @Expose
-    private List<Images> images = null;
+    private List<Images> images;
+    @SerializedName("Videos")
+    @Expose
+    private List<Video> videos;
     @SerializedName("Caption")
     @Expose
     private String caption;
@@ -49,7 +52,13 @@ public class Fields {
     public String getCaption() {
         return caption;
     }
+    public List<Video> getVideos() {
+        return videos;
+    }
 
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
+    }
     public void setCaption(String caption) {
         this.caption = caption;
     }

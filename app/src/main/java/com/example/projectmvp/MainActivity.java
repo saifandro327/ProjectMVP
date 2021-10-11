@@ -1,5 +1,6 @@
 package com.example.projectmvp;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -8,8 +9,11 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,8 +25,12 @@ import android.widget.Toast;
 import com.example.projectmvp.adapters.HomeFeedAdapter;
 import com.example.projectmvp.apis.ApiClient;
 import com.example.projectmvp.apis.Apis;
+import com.example.projectmvp.helpers.CustomDialogClass;
+import com.example.projectmvp.helpers.DetectConnection;
 import com.example.projectmvp.helpers.StartSnapHelper;
 import com.example.projectmvp.responses.FeedResponse;
+import com.example.projectmvp.responses.GoogsheetResponse;
+import com.example.projectmvp.responses.JsonModel;
 import com.example.projectmvp.responses.Record;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -38,14 +46,24 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerViewHomeFeed;
-    ArrayList<FeedResponse> feedResponseArrayList;
+    List<Record> feedResponseArrayList;
     HomeFeedAdapter homeFeedAdapter;
     Apis apis;
+    SwipeRefreshLayout swipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerViewHomeFeed = (RecyclerView) findViewById(R.id.home_feed_recyclerview);
+
+swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe_container);
+swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    @Override
+    public void onRefresh() {
+        getFeeddata();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+});
 
 //        homeFeedObjectsArrayList = new ArrayList<>();
 //        homeFeedObjectsArrayList.add(new HomeFeedObjects(R.mipmap.cat1, "Reddit", R.mipmap.pic2, "this is Caption"));
@@ -141,20 +159,62 @@ getFeeddata();
 //        }
 //    }
 
+    public class TryAgainListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            // Code to undo the user's last action
+            View contextView = findViewById(android.R.id.content);
+            // Make and display Snackbar
+            if (!DetectConnection.checkInternetConnection(MainActivity.this)) {
+                Snackbar snackbar = Snackbar.make(contextView, "Sorry, No Internet", 30000);
+                snackbar.setAction("Retry", new MainActivity.TryAgainListener());
+                snackbar.show();
+            } else {
+                getFeeddata();
+                Snackbar.make(contextView, "Internet Connected", Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+
+        }
+    }
+
 public void getFeeddata(){
     DisplayMetrics metrics = getDisplayMetrics();
 
-    final Call<FeedResponse> feedResponse = ApiClient.getUserService().getfeedData();
 
-feedResponse.enqueue(new Callback<FeedResponse>() {
-    @Override
-    public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
-        FeedResponse feedResponse1 = response.body();
-        if (feedResponse1 != null) {
-            feedResponseArrayList = new ArrayList(Arrays.asList(feedResponse1.getRecords()));
-            homeFeedAdapter = new HomeFeedAdapter(metrics, feedResponseArrayList, MainActivity.this);
-            recyclerViewHomeFeed.setAdapter(homeFeedAdapter);
-        }
+    final ProgressDialog progressDoalog;
+    progressDoalog = new ProgressDialog(MainActivity.this);
+    progressDoalog.setMessage("Loading....");
+    progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+    progressDoalog.show();
+
+
+    View contextView = findViewById(android.R.id.content);
+
+    if (!DetectConnection.checkInternetConnection(this)) {
+        progressDoalog.dismiss();
+        Snackbar snackbar = Snackbar.make(contextView, "Sorry, No Internet", 30000);
+        snackbar.setAction("Retry", new MainActivity.TryAgainListener());
+
+        snackbar.show();
+
+        }else {
+
+
+        final Call<FeedResponse> feedResponse = ApiClient.getUserService().getfeedData();
+
+        feedResponse.enqueue(new Callback<FeedResponse>() {
+            @Override
+            public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
+                progressDoalog.dismiss();
+                FeedResponse googsheetResponse = response.body();
+                if (googsheetResponse != null) {
+                    feedResponseArrayList = new ArrayList(Arrays.asList(googsheetResponse.getRecords()));
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
+                    homeFeedAdapter = new HomeFeedAdapter(metrics, feedResponseArrayList, MainActivity.this);
+                    recyclerViewHomeFeed.setLayoutManager(linearLayoutManager);
+                    recyclerViewHomeFeed.setAdapter(homeFeedAdapter);
+                }
 
 //if (feedResponse1!=null) {
 //    List<Record> resultList = response.body().getRecords();
@@ -166,18 +226,26 @@ feedResponse.enqueue(new Callback<FeedResponse>() {
 
 
 //            homeFeedAdapter=new HomeFeedAdapter(metrics, (ArrayList<FeedResponse>) feedResponseArrayList,getApplicationContext());
-//            LinearLayoutManager linearLayoutManager=new LinearLayoutManager(MainActivity.this,RecyclerView.VERTICAL,false);
 //            recyclerViewHomeFeed.setLayoutManager(linearLayoutManager);
 //            recyclerViewHomeFeed.setAdapter(homeFeedAdapter);
 //        }
 //        feedResponseArrayList= (response.body());
 
-    }
+            }
 
-    @Override
-    public void onFailure(Call<FeedResponse> call, Throwable t) {
-        Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            @Override
+            public void onFailure(Call<FeedResponse> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
     }
-});
 }
+    @Override
+    public void onBackPressed(){
+        CustomDialogClass cdd = new CustomDialogClass(MainActivity.this);
+        cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        cdd.show();
+    }
 }

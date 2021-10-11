@@ -86,9 +86,14 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.chip.ChipGroup>
 </HorizontalScrollView>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.example.projectmvp.helpers.MetalRecyclerViewPager
         android:id="@+id/home_feed_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>
