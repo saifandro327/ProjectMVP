@@ -50,27 +50,28 @@ public class MainActivity extends AppCompatActivity {
     HomeFeedAdapter homeFeedAdapter;
     Apis apis;
     SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerViewHomeFeed = (RecyclerView) findViewById(R.id.home_feed_recyclerview);
 
-swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe_container);
-swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-    @Override
-    public void onRefresh() {
-        getFeeddata();
-        swipeRefreshLayout.setRefreshing(false);
-    }
-});
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getFeeddata();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 //        homeFeedObjectsArrayList = new ArrayList<>();
 //        homeFeedObjectsArrayList.add(new HomeFeedObjects(R.mipmap.cat1, "Reddit", R.mipmap.pic2, "this is Caption"));
 //        homeFeedObjectsArrayList.add(new HomeFeedObjects(R.mipmap.cat1, "9GAG", R.mipmap.pic1, "this is 2nd Caption"));
 //        homeFeedObjectsArrayList.add(new HomeFeedObjects(R.mipmap.cat1, "Pewdiepie", R.mipmap.pic2, "this is 3rd Caption"));
-getSupportActionBar().hide();
-getFeeddata();
+        getSupportActionBar().hide();
+        getFeeddata();
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
 //        recyclerViewHomeFeed.setLayoutManager(linearLayoutManager);
 //        recyclerViewHomeFeed.setAdapter(homeFeedAdapter);
@@ -125,13 +126,13 @@ getFeeddata();
 //        }
     }
 
-        private DisplayMetrics getDisplayMetrics() {
-            Display display = getWindowManager().getDefaultDisplay();
-            DisplayMetrics metrics = new DisplayMetrics();
-            display.getMetrics(metrics);
+    private DisplayMetrics getDisplayMetrics() {
+        Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
 
-            return metrics;
-        }
+        return metrics;
+    }
 
 
 //    public class SnapHelperOneByOne extends PagerSnapHelper {
@@ -178,43 +179,43 @@ getFeeddata();
         }
     }
 
-public void getFeeddata(){
-    DisplayMetrics metrics = getDisplayMetrics();
+    public void getFeeddata() {
+        DisplayMetrics metrics = getDisplayMetrics();
 
 
-    final ProgressDialog progressDoalog;
-    progressDoalog = new ProgressDialog(MainActivity.this);
-    progressDoalog.setMessage("Loading....");
-    progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-    progressDoalog.show();
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(MainActivity.this);
+        progressDoalog.setMessage("Loading....");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDoalog.show();
 
 
-    View contextView = findViewById(android.R.id.content);
+        View contextView = findViewById(android.R.id.content);
 
-    if (!DetectConnection.checkInternetConnection(this)) {
-        progressDoalog.dismiss();
-        Snackbar snackbar = Snackbar.make(contextView, "Sorry, No Internet", 30000);
-        snackbar.setAction("Retry", new MainActivity.TryAgainListener());
+        if (!DetectConnection.checkInternetConnection(this)) {
+            progressDoalog.dismiss();
+            Snackbar snackbar = Snackbar.make(contextView, "Sorry, No Internet", 30000);
+            snackbar.setAction("Retry", new MainActivity.TryAgainListener());
 
-        snackbar.show();
+            snackbar.show();
 
-        }else {
+        } else {
 
 
-        final Call<FeedResponse> feedResponse = ApiClient.getUserService().getfeedData();
+            final Call<FeedResponse> feedResponse = ApiClient.getUserService().getfeedData();
 
-        feedResponse.enqueue(new Callback<FeedResponse>() {
-            @Override
-            public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
-                progressDoalog.dismiss();
-                FeedResponse googsheetResponse = response.body();
-                if (googsheetResponse != null) {
-                    feedResponseArrayList = new ArrayList(Arrays.asList(googsheetResponse.getRecords()));
-                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
-                    homeFeedAdapter = new HomeFeedAdapter(metrics, feedResponseArrayList, MainActivity.this);
-                    recyclerViewHomeFeed.setLayoutManager(linearLayoutManager);
-                    recyclerViewHomeFeed.setAdapter(homeFeedAdapter);
-                }
+            feedResponse.enqueue(new Callback<FeedResponse>() {
+                @Override
+                public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
+                    progressDoalog.dismiss();
+                    FeedResponse googsheetResponse = response.body();
+                    if (googsheetResponse != null) {
+                        feedResponseArrayList = new ArrayList(Arrays.asList(googsheetResponse.getRecords()));
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false);
+                        homeFeedAdapter = new HomeFeedAdapter(metrics, feedResponseArrayList, MainActivity.this);
+                        recyclerViewHomeFeed.setLayoutManager(linearLayoutManager);
+                        recyclerViewHomeFeed.setAdapter(homeFeedAdapter);
+                    }
 
 //if (feedResponse1!=null) {
 //    List<Record> resultList = response.body().getRecords();
@@ -231,19 +232,20 @@ public void getFeeddata(){
 //        }
 //        feedResponseArrayList= (response.body());
 
-            }
+                }
 
-            @Override
-            public void onFailure(Call<FeedResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<FeedResponse> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
 
-            }
+                }
 
-        });
+            });
+        }
     }
-}
+
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         CustomDialogClass cdd = new CustomDialogClass(MainActivity.this);
         cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         cdd.show();

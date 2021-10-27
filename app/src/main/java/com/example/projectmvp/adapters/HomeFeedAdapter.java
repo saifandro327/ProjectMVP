@@ -55,7 +55,7 @@ import fr.tvbarthel.intentshare.IntentShare;
 public class HomeFeedAdapter extends MetalRecyclerViewPager.MetalAdapter<HomeFeedAdapter.ViewHolder> {
     private static final String TAG = "Adapter";
     private Context context;
-    private String base_URL="https://api.airtable.com/";
+    private String base_URL = "https://api.airtable.com/";
     private List<Record> homeFeedObjects;
 
     public HomeFeedAdapter(@NonNull DisplayMetrics metrics, List<Record> homeFeedObjects, Context context) {
@@ -76,43 +76,42 @@ public class HomeFeedAdapter extends MetalRecyclerViewPager.MetalAdapter<HomeFee
     @Override
     public void onBindViewHolder(@NonNull @NotNull HomeFeedAdapter.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-String imageUrl;
-String videoUrl= String.valueOf(homeFeedObjects.get(position).getFields().getVideos());
+        String imageUrl;
+        String videoUrl = String.valueOf(homeFeedObjects.get(position).getFields().getVideos());
         try {
-            if (homeFeedObjects.get(position).getFields().getImages()!=null){
+            if (homeFeedObjects.get(position).getFields().getImages() != null) {
                 holder.videoViewPost.setVisibility(View.GONE);
                 List<Images> enrloment = homeFeedObjects.get(position).getFields().getImages();
                 ArrayList<String> enrolmentData = new ArrayList();
-                for(int i =0;i<enrloment.size();i++){
+                for (int i = 0; i < enrloment.size(); i++) {
                     enrolmentData.add(enrloment.get(i).getUrl());
-            }
+                }
 
-        }
-            else {
-               Uri videoUri=Uri.parse(videoUrl);
-              try {
-                  holder.videoViewPost.setVideoURI(videoUri);
-                  holder.videoViewPost.setTag(videoUrl);
-                  String hasVideo_string = (String) holder.videoViewPost.getTag();
-                  boolean hasVideo = Boolean.parseBoolean(hasVideo_string);
-              }catch (Exception e) {
-                  e.printStackTrace();
-              }
+            } else {
+                Uri videoUri = Uri.parse(videoUrl);
+                try {
+                    holder.videoViewPost.setVideoURI(videoUri);
+                    holder.videoViewPost.setTag(videoUrl);
+                    String hasVideo_string = (String) holder.videoViewPost.getTag();
+                    boolean hasVideo = Boolean.parseBoolean(hasVideo_string);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 //        String image = base_URL + homeFeedObjects.get(position).getFields().getProfilePicture().get(1).getUrl();
 
-    holder.textViewProfileName.setText(homeFeedObjects.get(position).getFields().getName());
+            holder.textViewProfileName.setText(homeFeedObjects.get(position).getFields().getName());
 //        holder.textViewCaption.setText(homeFeedObjects.get(position).getFields().getCaption());
-    Glide.with(context).load(homeFeedObjects.get(position).getFields().getProfilePicture().get(0).getUrl()).
+            Glide.with(context).load(homeFeedObjects.get(position).getFields().getProfilePicture().get(0).getUrl()).
 //                apply(new RequestOptions().override(75, 75)).
 
 
         into(holder.imageViewProfile);
 //                   .centerCrop()
 //                .placeholder(R.drawable.loading_spinner)
-    Glide.with(context)
-            .load(homeFeedObjects.get(position).getFields().getImages().get(0).getUrl())
-            .into(holder.imageViewPost);
+            Glide.with(context)
+                    .load(homeFeedObjects.get(position).getFields().getImages().get(0).getUrl())
+                    .into(holder.imageViewPost);
 //        Glide.with(context)
 //                .load(enrolmentData)
 //                .centerCrop()
@@ -123,10 +122,9 @@ String videoUrl= String.valueOf(homeFeedObjects.get(position).getFields().getVid
 //                .into(holder.imageViewPost);
 //Picasso.get().load(homeFeedObjects.get(position).getFields().getImages()).into(holder.imageViewPost);
 //Picasso.get().load(homeFeedObjects.get(position).getFields().getImages()).into(holder.imageViewPost);
-}
-catch (Exception e){
+        } catch (Exception e) {
 
-}
+        }
 //        holder.imageViewPopupMenu.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -152,13 +150,14 @@ catch (Exception e){
                     Intent shareIntent = new Intent();
                     shareIntent.setAction(Intent.ACTION_SEND);
                     shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                    shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "For Countless memes Download the App at"+"https://jaffsay.weebly.com/download.html");
+                    shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "For Countless memes Download the App at" + "https://jaffsay.weebly.com/download.html");
 
                     shareIntent.setType("image/*");
                     // Launch sharing dialog for image
                     context.startActivity(Intent.createChooser(shareIntent, "Share Meme"));
                 } else {
-                    Toast.makeText(context, "Sharing failed", Toast.LENGTH_SHORT).show();                }
+                    Toast.makeText(context, "Sharing failed", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -207,11 +206,12 @@ catch (Exception e){
     public class ViewHolder extends MetalRecyclerViewPager.MetalViewHolder {
 
 
-        TextView  textViewProfileName;
+        TextView textViewProfileName;
         ImageView imageViewProfile, imageViewPost;
         VideoView videoViewPost;
-//        ImageView imageViewPopupMenu;
-ImageView imageViewShare,imageViewDownload;
+        //        ImageView imageViewPopupMenu;
+        ImageView imageViewShare, imageViewDownload;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 //            textViewCaption = (TextView) itemView.findViewById(R.id.caption_textview);
@@ -220,43 +220,41 @@ ImageView imageViewShare,imageViewDownload;
             imageViewPost = (ImageView) itemView.findViewById(R.id.feed_imageview);
 //            imageViewPopupMenu = (ImageView) itemView.findViewById(R.id.action_popup_menu_imageview);
             imageViewShare = (ImageView) itemView.findViewById(R.id.share_imageview);
-            videoViewPost=(VideoView)itemView.findViewById(R.id.feed_videoview);
+            videoViewPost = (VideoView) itemView.findViewById(R.id.feed_videoview);
 
 //            imageViewDownload = (ImageView) itemView.findViewById(R.id.download_imageview);
 
         }
 
 
-
     }
-        public Uri getLocalBitmapUri(ImageView imageView) {
-            // Extract Bitmap from ImageView drawable
-            Drawable drawable = imageView.getDrawable();
-            Bitmap bmp = null;
-            if (drawable instanceof BitmapDrawable){
-                bmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-            } else {
-                return null;
-            }
-            // Store image to default external storage directory
-            Uri bmpUri = null;
-            try {
-                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                StrictMode.setVmPolicy(builder.build());
-                File file =  new File(Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
-                file.getParentFile().mkdirs();
-                FileOutputStream out = new FileOutputStream(file);
-                bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-                out.close();
-                bmpUri = Uri.fromFile(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bmpUri;
+
+    public Uri getLocalBitmapUri(ImageView imageView) {
+        // Extract Bitmap from ImageView drawable
+        Drawable drawable = imageView.getDrawable();
+        Bitmap bmp = null;
+        if (drawable instanceof BitmapDrawable) {
+            bmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        } else {
+            return null;
         }
-
-
+        // Store image to default external storage directory
+        Uri bmpUri = null;
+        try {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+            File file = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOWNLOADS), "share_image_" + System.currentTimeMillis() + ".png");
+            file.getParentFile().mkdirs();
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+            bmpUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
+    }
 
 
 }
